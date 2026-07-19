@@ -370,9 +370,36 @@ SELECT * FROM [Group]
 WHERE RoomId IS NULL
 
 SELECT 
-    [Teachers].FullName AS [Name],
+    [Teachers].FullName AS [FullName],
     COUNT(GroupTeachers.GroupId) AS GroupCount
 FROM [Teachers]
 LEFT JOIN GroupTeachers
     ON [GroupTeachers].Id = GroupTeachers.TeacherId
 GROUP BY [Teachers].FullName;
+
+SELECT 
+    [Educations].[Name] AS EducationName,
+    COUNT(Teachers.id) AS TeacherCount
+FROM Educations
+LEFT JOIN Teachers
+    ON Educations.Id = Teachers.EducationId
+GROUP BY Educations.[Name];
+
+
+SELECT
+    StaffMembers.FullName AS StaffName,
+    Roles.[Name] AS RoleName
+FROM StaffMembers
+INNER JOIN StaffMemberRoles
+    ON StaffMembers.Id = StaffMemberRoles.StaffMemberId
+INNER JOIN Roles
+    ON StaffMemberRoles.RoleId = Roles.Id;
+
+SELECT
+    StaffMembers.FullName AS StaffName,
+    COUNT(StaffMemberRoles.RoleId) AS RoleCount
+FROM StaffMembers
+INNER JOIN StaffMemberRoles
+    ON StaffMembers.Id = StaffMemberRoles.StaffMemberId
+GROUP BY StaffMembers.FullName
+HAVING COUNT(StaffMemberRoles.RoleId) > 1;
